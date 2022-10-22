@@ -1,9 +1,0 @@
-       -----Lista de produse-----
-1     TV    3500.0RON   50buc      Sony      2022   
-2     TV    2880.0RON   50buc    Samsung     2021   
-3   Cuptor  2000.0RON   50buc     Bosch      2018   
-4  Frigider 4200.0RON   50buc     Bosch      2022   
-5   Tricou   89.0 RON   50buc     bumbac      S     
-6   Tricou   89.0 RON   50buc     bumbac      M     
-7   Fusta   120.0 RON   50buc     bumbac      S     
-8  Hanorac  150.0 RON   50buc      lana       M     
