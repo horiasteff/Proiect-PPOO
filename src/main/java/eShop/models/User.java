@@ -46,10 +46,19 @@ public class User {
         return password;
     }
 
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
     @Override
     public String toString() {
-        return "User: " +
-                StringUtils.center(name,10);
+        return StringUtils.center(name,10) +
+         StringUtils.center(password,10) +
+         StringUtils.center(String.valueOf(birthDate),10) ;
     }
 
 }

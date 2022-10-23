@@ -4,6 +4,10 @@ import eShop.models.Admin;
 import eShop.models.User;
 import eShop.phones.Phone;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +21,20 @@ public class DataSource {
 
     public static List<User> userList(){
         List<User> users = new ArrayList<>();
-        User user = new User("Horia", "1234", "2000-05-01");
-        users.add(user);
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("Users.txt"));
+            String st;
+            while ((st = br.readLine()) != null) {
+                User user = new User(st.split(" ")[0], st.split(" ")[1], st.split(" ")[2]);
+                users.add(user);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
         return users;
     }

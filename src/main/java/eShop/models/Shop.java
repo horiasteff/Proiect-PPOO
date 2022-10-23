@@ -4,6 +4,7 @@ import eShop.data.DataSource;
 import eShop.enums.Color;
 import eShop.phones.Phone;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class Shop {
         System.out.println("1. Login");
         System.out.println("2. Register");
         System.out.println("3. View phones only");
+        System.out.println("4. Exit");
         chooseStart();
         if (status.equalsIgnoreCase("user")) {
             showUserMenu();
@@ -42,11 +44,11 @@ public class Shop {
         }
     }
 
-    private void chooseStart(){
+    private void chooseStart() {
         boolean isValid = false;
-        do{
+        do {
             startOption = sc.next();
-            switch (startOption){
+            switch (startOption) {
                 case "1":
                     login();
                     if (status.equalsIgnoreCase("user")) {
@@ -57,9 +59,13 @@ public class Shop {
                     break;
                 case "2":
                     register();
+                    start();
                     break;
                 case "3":
                     getAllPhones();
+                    break;
+                case "4":
+                    exit();
                     break;
                 default:
                     System.out.println("Please enter a valid choice");
@@ -67,10 +73,10 @@ public class Shop {
                     break;
             }
 
-        }while(!isValid);
+        } while (!isValid);
     }
 
-    private void register(){
+    private void register() {
         System.out.println("What is your name?");
         String username = sc.next();
         System.out.println("Please choose a password for your account");
@@ -78,9 +84,15 @@ public class Shop {
         System.out.println("Enter your date of birth (DD-MM-YYYY)");
         String date = sc.next();
 
-        User user = new User(username,password,date);
+        User user = new User(username, password, date);
         users.add(user);
-
+        try {
+            PrintWriter out = new PrintWriter(new FileWriter("Users.txt", true));
+            out.append(user.getName() + " " + user.getPassword() + " " + user.getBirthDate() +"\n");
+            out.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
     }
 
     private void login() {
@@ -198,6 +210,7 @@ public class Shop {
                 case "6":
                     showInfo();
                     isValid = true;
+                    break;
                 case "7":
                     login();
                     if (status.equalsIgnoreCase("user")) {
@@ -540,7 +553,7 @@ public class Shop {
 
                 for (Phone phone : phones) {
                     if (!phone.isBought()) {
-                        if (name.equalsIgnoreCase(phone.getName()) && year.equals(phone.getYear()) && color.equalsIgnoreCase(String.valueOf(phone.getColor())) && size==phone.getSize()) {
+                        if (name.equalsIgnoreCase(phone.getName()) && year.equals(phone.getYear()) && color.equalsIgnoreCase(String.valueOf(phone.getColor())) && size == phone.getSize()) {
                             isFound = true;
                             warantyBuy(phone);
                             break;
@@ -593,8 +606,8 @@ public class Shop {
         }
     }
 
-    private String exit() {
-        return null;
+    private void exit() {
+        System.exit(0);
     }
 
     private List<BoughtPhone> getCurrentlyBoughtPhones() {
@@ -649,5 +662,13 @@ public class Shop {
                 }
             }
         }
+    }
+
+    private void addUserToFile(User user) throws IOException {
+        FileWriter fw = new FileWriter("Users.txt", true);
+        PrintWriter printWriter = new PrintWriter("Users.txt");
+        //BufferedWriter writer = new BufferedWriter(fw);
+        //writer.write(String.valueOf(user.getName()));
+        printWriter.println(user.getName());
     }
 }
