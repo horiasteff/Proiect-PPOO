@@ -590,6 +590,13 @@ public class Shop {
         BoughtPhone currentPhone = new BoughtPhone();
         currentPhone.setPhone(phone);
         currentPhone.setCurrentlyBought(true);
+        try {
+            PrintWriter out = new PrintWriter(new FileWriter("BoughtPhones.txt", true));
+            out.append(currentPhone.getPhone().getName() + " " + currentPhone.getPhone().getSize() + " " + currentPhone.getPhone().getYear() + " " + currentPhone.getPhone().getColor() + " " + currentPhone.getPhone().getBasePrice() +"\n");
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         currentPhone.setPickUpDate(LocalDate.now());
         currentUser.boughtPhones.add(currentPhone);
         feature.payInRates(phone.getBasePrice());
