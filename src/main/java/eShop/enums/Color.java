@@ -8,6 +8,7 @@ public enum Color {
     GREY(7),
     GREEN(10),
     BLUE(12),
+    PURPLE(12),
     WHITE(15);
 
     private long price;

@@ -1,6 +1,5 @@
 package eShop;
 
-
 import eShop.models.Shop;
 
 public class Main {

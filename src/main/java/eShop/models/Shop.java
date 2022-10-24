@@ -470,13 +470,12 @@ public class Shop {
     private void getAllPhones() {
         int i = 1;
         System.out.println("There are all the phones");
-//        System.out.println(service.getCarHeader());
-//        for (Car car : DataSource.carList()) {
-//            String padding = i < 10 ? " " : "";
-//            System.out.print(padding + i + ". ");
-//            System.out.println(car);
-//            i++;
-//        }
+        for (Phone phone : DataSource.phoneList()) {
+            String padding = i < 10 ? " " : "";
+            System.out.print(padding + i + ". ");
+            System.out.println(phone);
+            i++;
+        }
     }
 
     private void getAllUsers() {
@@ -499,16 +498,15 @@ public class Shop {
     }
 
     private void getAvailablePhones() {
-//        int i = 1;
-//        System.out.println(service.getCarHeader());
-//        System.out.println("These are the available cars");
-//        for (Car car : cars) {
-//            if (!car.isRented()) {
-//                System.out.print(i + ". ");
-//                System.out.println(car);
-//                i++;
-//            }
-//        }
+        int i = 1;
+        System.out.println("These are the available phones");
+        for (Phone phone : phones) {
+            if (!phone.isBought()) {
+                System.out.print(i + ". ");
+                System.out.println(phone);
+                i++;
+            }
+        }
     }
 
     private void buyAPhone() {
