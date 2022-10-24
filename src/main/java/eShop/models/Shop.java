@@ -261,22 +261,22 @@ public class Shop {
                 case "1":
                     getAllPhones();
                     System.out.println();
-                    renting();
+                    buying();
                     isValidChoice = true;
                     break;
                 case "2":
                     getAvailablePhones();
                     System.out.println();
-                    renting();
+                    buying();
                     isValidChoice = true;
                     break;
                 case "3":
                     getBoughtPhones();
-                    renting();
+                    buying();
                     isValidChoice = true;
                     break;
                 case "4":
-                    System.out.println(getCurrentlyBoughtPhones());
+                    getCurrentlyBoughtPhones();
                     isValidChoice = true;
                     break;
                 case "5":
@@ -348,32 +348,32 @@ public class Shop {
                     System.out.println("What is the NAME of the phone?");
                     String name = sc.next();
                     service.filterByName(name);
-                    renting();
+                    buying();
                     isValidChoice = true;
                     break;
                 case "2":
                     System.out.println("What is the YEAR of the phone?");
                     Integer year = sc.nextInt();
                     service.filterByYear(year);
-                    renting();
+                    buying();
                     isValidChoice = true;
                     break;
                 case "3":
                     System.out.println("What is the COLOR of the phone?");
                     String color = sc.next().toUpperCase();
                     service.filterByColor(Color.valueOf(color));
-                    renting();
+                    buying();
                     isValidChoice = true;
                     break;
                 case "4":
                     System.out.println("What is the SIZE of the phone?");
                     float size = sc.nextFloat();
                     service.filterBySize(size);
-                    renting();
+                    buying();
                     isValidChoice = true;
                     break;
                 case "5":
-                    renting();
+                    buying();
                     isValidChoice = true;
                     break;
                 case "6":
@@ -489,11 +489,11 @@ public class Shop {
         int i = 1;
         System.out.println("These are the bought phones");
         for (Phone phone : phones) {
-//            if (phones()) {
-//                System.out.print(i);
-//                System.out.println(car);
-//                i++;
-//            }
+            if (phone.isBought()) {
+                System.out.print(i);
+                System.out.println(phone);
+                i++;
+            }
         }
     }
 
@@ -528,6 +528,8 @@ public class Shop {
                             if (index == phone.getIndex()) {
                                 isFound = true;
                                 isValid = true;
+                               // System.out.println(phone);
+                                warantyBuy(phone);
                             } else {
                                 isValid = false;
                             }
@@ -535,7 +537,7 @@ public class Shop {
                     }
                 } while (!isValid);
             } else if (output.equals("F")) {
-                showListMenuOptions();
+                //showListMenuOptions();
                 System.out.println("What is the NAME of the phone you want to buy?");
                 String name = sc.next();
                 service.filterByName(name);
@@ -616,7 +618,7 @@ public class Shop {
         return boughtPhones;
     }
 
-    private void renting() {
+    private void buying() {
         System.out.println("Do you want to buy a phone?");
         output = sc.next();
         if (output.equalsIgnoreCase("yes")) {
@@ -662,11 +664,11 @@ public class Shop {
         }
     }
 
-    private void addUserToFile(User user) throws IOException {
-        FileWriter fw = new FileWriter("Users.txt", true);
-        PrintWriter printWriter = new PrintWriter("Users.txt");
-        //BufferedWriter writer = new BufferedWriter(fw);
-        //writer.write(String.valueOf(user.getName()));
-        printWriter.println(user.getName());
-    }
+//    private void addUserToFile(User user) throws IOException {
+//        FileWriter fw = new FileWriter("Users.txt", true);
+//        PrintWriter printWriter = new PrintWriter("Users.txt");
+//        //BufferedWriter writer = new BufferedWriter(fw);
+//        //writer.write(String.valueOf(user.getName()));
+//        printWriter.println(user.getName());
+//    }
 }
