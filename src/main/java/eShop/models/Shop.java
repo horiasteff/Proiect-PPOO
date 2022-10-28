@@ -3,8 +3,10 @@ package eShop.models;
 import eShop.data.DataSource;
 import eShop.enums.Color;
 import eShop.phones.Phone;
+import org.apache.commons.io.FileUtils;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -446,6 +448,40 @@ public class Shop {
                     System.out.println("Enter your new password");
                     password = sc.next();
                     currentUser.setPassword(password);
+
+                    try {
+                        FileUtils.write(new File("Temp.txt"), "", Charset.defaultCharset());
+
+                        BufferedReader br = new BufferedReader(new FileReader("Users.txt"));
+                        BufferedWriter out = new BufferedWriter(new FileWriter("Temp.txt", true));
+                        String st;
+                        while ((st = br.readLine()) != null) {
+                            User user = new User(st.split(" ")[0], st.split(" ")[1], st.split(" ")[2]);
+                            if(user.getName().equals(currentUser.getName()) && user.getBirthDate().equals(currentUser.getBirthDate())){
+                                out.write(currentUser.getName() + " " + currentUser.getPassword() + " " + currentUser.getBirthDate() + "\n");
+                            }else{
+                                out.write(user.getName() + " " + user.getPassword() + " " + user.getBirthDate() + "\n");
+                            }
+                        }
+                        out.close();
+
+                        FileUtils.write(new File("Users.txt"), "", Charset.defaultCharset());
+
+
+                        BufferedReader br2 = new BufferedReader(new FileReader("Temp.txt"));
+                        PrintWriter printWriter = new PrintWriter(new FileWriter("Users.txt"));
+                        String line;
+                        while((line = br2.readLine()) != null){
+                            printWriter.append(line.split(" ")[0] + " " + line.split(" ")[1] + " " +line.split(" ")[2] + "\n");
+                        }
+                        printWriter.close();
+
+                        FileUtils.write(new File("Temp.txt"), "", Charset.defaultCharset());
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 } else {
                     System.out.println("You entered the wrong password");
                     showUserMenu();
