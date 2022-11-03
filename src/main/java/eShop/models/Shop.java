@@ -7,16 +7,16 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Shop {
 
     Scanner sc = new Scanner(System.in);
-    List<User> users = DataSource.userList();
-    List<Admin> admins = DataSource.adminList();
+    Set<User> users = DataSource.userList();
+    Set<Admin> admins = DataSource.adminList();
     FilterService service = new FilterService();
     List<Phone> phones = DataSource.phoneList();
     Features feature = new Features();
@@ -52,6 +52,7 @@ public class Shop {
             startOption = sc.next();
             switch (startOption) {
                 case "1":
+                    isValid = true;
                     login();
                     if (status.equalsIgnoreCase("user")) {
                         showUserMenu();
@@ -60,13 +61,16 @@ public class Shop {
                     }
                     break;
                 case "2":
+                    isValid = true;
                     register();
                     start();
                     break;
                 case "3":
+                    isValid = true;
                     getAllPhones();
                     break;
                 case "4":
+                    isValid = true;
                     exit();
                     break;
                 default:
@@ -90,7 +94,7 @@ public class Shop {
         users.add(user);
         try {
             PrintWriter out = new PrintWriter(new FileWriter("Users.txt", true));
-            out.append(user.getName() + " " + user.getPassword() + " " + user.getBirthDate() +"\n");
+            out.append(user.getName()).append(" ").append(user.getPassword()).append(" ").append(String.valueOf(user.getBirthDate())).append("\n");
             out.close();
         } catch (IOException e) {
           e.printStackTrace();
@@ -151,7 +155,7 @@ public class Shop {
             option = sc.next();
 
             switch (option) {
-                case "1":
+                case "1" -> {
                     getAllPhones();
                     System.out.println("Want to go back to previous menu?");
                     output = sc.next();
@@ -159,8 +163,8 @@ public class Shop {
                         showAdminMenu();
                     }
                     isValid = true;
-                    break;
-                case "2":
+                }
+                case "2" -> {
                     getAvailablePhones();
                     System.out.println();
                     System.out.println("Want to go back to previous menu?");
@@ -169,8 +173,8 @@ public class Shop {
                         showAdminMenu();
                     }
                     isValid = true;
-                    break;
-                case "3":
+                }
+                case "3" -> {
                     getBoughtPhones();
                     System.out.println("Want to go back to previous menu?");
                     output = sc.next();
@@ -178,8 +182,8 @@ public class Shop {
                         showAdminMenu();
                     }
                     isValid = true;
-                    break;
-                case "4":
+                }
+                case "4" -> {
                     statistics();
                     System.out.println("Do you want to go back to previous menu?");
                     output = sc.next();
@@ -190,8 +194,8 @@ public class Shop {
                         showUserMenu();
                     }
                     isValid = true;
-                    break;
-                case "5":
+                }
+                case "5" -> {
                     changePassword();
                     System.out.println("Do you want to go back to previous menu?");
                     output = sc.next();
@@ -208,12 +212,12 @@ public class Shop {
                         }
                     }
                     isValid = true;
-                    break;
-                case "6":
+                }
+                case "6" -> {
                     showInfo();
                     isValid = true;
-                    break;
-                case "7":
+                }
+                case "7" -> {
                     login();
                     if (status.equalsIgnoreCase("user")) {
                         showUserMenu();
@@ -221,14 +225,12 @@ public class Shop {
                         showAdminMenu();
                     }
                     isValid = true;
-                    break;
-                case "8":
-                    isValid = true;
-                    break;
-                default:
+                }
+                case "8" -> isValid = true;
+                default -> {
                     System.out.println("Please enter a valid choice");
                     isValid = false;
-                    break;
+                }
             }
         } while (!isValid);
 
@@ -260,28 +262,28 @@ public class Shop {
         do {
             String choice = sc.next();
             switch (choice) {
-                case "1":
+                case "1" -> {
                     getAllPhones();
                     System.out.println();
                     buying();
                     isValidChoice = true;
-                    break;
-                case "2":
+                }
+                case "2" -> {
                     getAvailablePhones();
                     System.out.println();
                     buying();
                     isValidChoice = true;
-                    break;
-                case "3":
+                }
+                case "3" -> {
                     getBoughtPhones();
                     buying();
                     isValidChoice = true;
-                    break;
-                case "4":
+                }
+                case "4" -> {
                     getCurrentlyBoughtPhones();
                     isValidChoice = true;
-                    break;
-                case "5":
+                }
+                case "5" -> {
                     changePassword();
                     System.out.println("Do you want to go back to previous menu?");
                     output = sc.next();
@@ -298,16 +300,16 @@ public class Shop {
                         }
                     }
                     isValidChoice = true;
-                    break;
-                case "6":
+                }
+                case "6" -> {
                     showInfo();
                     isValidChoice = true;
-                    break;
-                case "7":
+                }
+                case "7" -> {
                     showListMenuOptions();
                     isValidChoice = true;
-                    break;
-                case "8":
+                }
+                case "8" -> {
                     start();
                     if (status.equalsIgnoreCase("user")) {
                         showUserMenu();
@@ -315,16 +317,13 @@ public class Shop {
                         showAdminMenu();
                     }
                     isValidChoice = true;
-                    break;
-                case "9":
-                    isValidChoice = true;
-                    break;
-
-                default:
+                }
+                case "9" -> isValidChoice = true;
+                default -> {
                     System.out.println("You entered a wrong number!");
                     showUserMenu();
                     isValidChoice = false;
-                    break;
+                }
             }
         } while (!isValidChoice);
     }
@@ -346,46 +345,46 @@ public class Shop {
         do {
             String choice = sc.next();
             switch (choice) {
-                case "1":
+                case "1" -> {
                     System.out.println("What is the NAME of the phone?");
                     String name = sc.next();
                     service.filterByName(name);
                     buying();
                     isValidChoice = true;
-                    break;
-                case "2":
+                }
+                case "2" -> {
                     System.out.println("What is the YEAR of the phone?");
                     Integer year = sc.nextInt();
                     service.filterByYear(year);
                     buying();
                     isValidChoice = true;
-                    break;
-                case "3":
+                }
+                case "3" -> {
                     System.out.println("What is the COLOR of the phone?");
                     String color = sc.next().toUpperCase();
                     service.filterByColor(Color.valueOf(color));
                     buying();
                     isValidChoice = true;
-                    break;
-                case "4":
+                }
+                case "4" -> {
                     System.out.println("What is the SIZE of the phone?");
                     float size = sc.nextFloat();
                     service.filterBySize(size);
                     buying();
                     isValidChoice = true;
-                    break;
-                case "5":
+                }
+                case "5" -> {
                     buying();
                     isValidChoice = true;
-                    break;
-                case "6":
+                }
+                case "6" -> {
                     showUserMenu();
                     isValidChoice = true;
-                    break;
-                default:
+                }
+                default -> {
                     System.out.println("Enter a valid choice");
                     isValidChoice = false;
-                    break;
+                }
             }
         } while (!isValidChoice);
     }
@@ -472,7 +471,7 @@ public class Shop {
                         PrintWriter printWriter = new PrintWriter(new FileWriter("Users.txt"));
                         String line;
                         while((line = br2.readLine()) != null){
-                            printWriter.append(line.split(" ")[0] + " " + line.split(" ")[1] + " " +line.split(" ")[2] + "\n");
+                            printWriter.append(line.split(" ")[0]).append(" ").append(line.split(" ")[1]).append(" ").append(line.split(" ")[2]).append("\n");
                         }
                         printWriter.close();
 
@@ -548,23 +547,18 @@ public class Shop {
     private void buyAPhone() {
 
         boolean buying = true;
-        boolean isFound = false;
 
         while (buying) {
             buying = false;
-            System.out.println("Choose 'I' for buying the index or 'F' to go with a filter");
-            output = sc.next().toUpperCase();
-            if (output.equals("I")) {
+
                 boolean isValid = false;
                 do {
-                    System.out.println("Choose index");
+                    System.out.println("Choose the index");
                     int index = sc.nextInt();
                     for (Phone phone : phones) {
                         if (!phone.isBought()) {
                             if (index == phone.getIndex()) {
-                                isFound = true;
                                 isValid = true;
-                               // System.out.println(phone);
                                 warantyBuy(phone);
                             } else {
                                 isValid = false;
@@ -572,49 +566,23 @@ public class Shop {
                         }
                     }
                 } while (!isValid);
-            } else if (output.equals("F")) {
-                //showListMenuOptions();
-                System.out.println("What is the NAME of the phone you want to buy?");
-                String name = sc.next();
-                service.filterByName(name);
-                System.out.println("What is the YEAR of the phone you want to buy?");
-                Integer year = sc.nextInt();
-                service.filterByYear(year);
-                System.out.println("What is the COLOR of the phone you want to buy?");
-                String color = sc.next().toUpperCase();
-                service.filterByColor(Color.valueOf(color));
-                System.out.println("What is the SIZE of the phone you want to buy?");
-                float size = sc.nextFloat();
-                service.filterBySize(size);
-
-                for (Phone phone : phones) {
-                    if (!phone.isBought()) {
-                        if (name.equalsIgnoreCase(phone.getName()) && year.equals(phone.getYear()) && color.equalsIgnoreCase(String.valueOf(phone.getColor())) && size == phone.getSize()) {
-                            isFound = true;
-                            warantyBuy(phone);
-                            break;
-                        }
-                    }
-                }
-            } else {
-                System.out.println("Please choose from the options");
-            }
-            if (!isFound) {
-                System.out.println("We couldn't find your specified phone. Try something else");
-                buying = true;
-            }
         }
         showUserMenu();
     }
 
     private void warantyBuy(Phone phone) {
-        int warantyYears;
+        int warantyYears = -1;
 
         System.out.println("The phone you want to buy is: \n" + phone);
         System.out.println("\nFow how many years do you want the waranty?");
         System.out.println("Please choose a number smaller than 5");
         do {
-            warantyYears = sc.nextInt();
+            try{
+                warantyYears = Integer.parseInt(sc.next());
+            }catch (Exception e){
+                System.out.println("Ai introdus eronat");
+                warantyBuy(phone);
+            };
             if (warantyYears > 5) {
                 System.out.println("Please choose a number smaller than 5");
             }
@@ -628,12 +596,11 @@ public class Shop {
         currentPhone.setCurrentlyBought(true);
         try {
             PrintWriter out = new PrintWriter(new FileWriter("BoughtPhones.txt", true));
-            out.append(currentPhone.getPhone().getName() + " " + currentPhone.getPhone().getSize() + " " + currentPhone.getPhone().getYear() + " " + currentPhone.getPhone().getColor() + " " + currentPhone.getPhone().getBasePrice() +"\n");
+            out.append(currentPhone.getPhone().getName()).append(" ").append(String.valueOf(currentPhone.getPhone().getSize())).append(" ").append(String.valueOf(currentPhone.getPhone().getYear())).append(" ").append(String.valueOf(currentPhone.getPhone().getColor())).append(" ").append(String.valueOf(currentPhone.getPhone().getBasePrice())).append("\n");
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        currentPhone.setPickUpDate(LocalDate.now());
         currentUser.boughtPhones.add(currentPhone);
         feature.payInRates(phone.getBasePrice());
 
@@ -678,40 +645,23 @@ public class Shop {
         do {
             String option = sc.next();
             switch (option) {
-                case "1":
+                case "1" -> {
                     seeIncome();
                     isValid = true;
-                    break;
-                case "2":
+                }
+                case "2" -> {
                     getAllUsers();
                     isValid = true;
-                    break;
-                case "3":
+                }
+                case "3" -> {
                     showUserMenu();
                     isValid = true;
-                    break;
-                default:
+                }
+                default -> {
                     System.out.println("Please enter a valid choice");
                     isValid = false;
-                    break;
+                }
             }
         } while (!isValid);
     }
-
-    private void chooseIndex(int index) {
-        for (Phone phone : phones) {
-            if (!phone.isBought()) {
-                if (index == phone.getIndex()) {
-                }
-            }
-        }
-    }
-
-//    private void addUserToFile(User user) throws IOException {
-//        FileWriter fw = new FileWriter("Users.txt", true);
-//        PrintWriter printWriter = new PrintWriter("Users.txt");
-//        //BufferedWriter writer = new BufferedWriter(fw);
-//        //writer.write(String.valueOf(user.getName()));
-//        printWriter.println(user.getName());
-//    }
 }

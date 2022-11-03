@@ -8,14 +8,12 @@ import eShop.phones.Phone;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class DataSource {
 
-    public static List<User> userList(){
-        List<User> users = new ArrayList<>();
+    public static Set<User> userList(){
+        Set<User> users = new HashSet<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader("Users.txt"));
             String st;
@@ -29,8 +27,8 @@ public class DataSource {
         return users;
     }
 
-    public static List<Admin> adminList(){
-        List<Admin> admins = new ArrayList<>();
+    public static Set<Admin> adminList(){
+        Set<Admin> admins = new HashSet<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader("Admins.txt"));
             String st;
