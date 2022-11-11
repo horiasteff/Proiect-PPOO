@@ -2,6 +2,7 @@ package eShop.models;
 
 import eShop.data.DataSource;
 import eShop.enums.Color;
+import eShop.exceptions.UserAlreadyExists;
 import eShop.phones.Phone;
 import org.apache.commons.io.FileUtils;
 
@@ -39,10 +40,12 @@ public class Shop {
         System.out.println("3. View phones only");
         System.out.println("4. Exit");
         chooseStart();
-        if (status.equalsIgnoreCase("user")) {
-            showUserMenu();
-        } else {
-            showAdminMenu();
+        if(status!=null){
+            if (status.equalsIgnoreCase("user")) {
+                showUserMenu();
+            } else {
+                showAdminMenu();
+            }
         }
     }
 
@@ -85,12 +88,23 @@ public class Shop {
     private void register() {
         System.out.println("What is your name?");
         String username = sc.next();
+
         System.out.println("Please choose a password for your account");
         String password = sc.next();
-        System.out.println("Enter your date of birth (DD-MM-YYYY)");
+        System.out.println("Enter your date of birth (YYYY-MM-DD)");
         String date = sc.next();
 
         User user = new User(username, password, date);
+        for (User u : users) {
+           if(u.getName().equals(user.getName())){
+               try {
+                   throw new UserAlreadyExists("Exista deja acest utilizator");
+               } catch (UserAlreadyExists e) {
+                   e.printStackTrace();
+                   start();
+               }
+           }
+        }
         users.add(user);
         try {
             PrintWriter out = new PrintWriter(new FileWriter("Users.txt", true));
@@ -588,7 +602,8 @@ public class Shop {
             }
         } while (warantyYears > 5);
 
-
+        long totalPrice = phone.getBasePrice() + warantyYears* 100L;
+        phone.setBasePrice(totalPrice);
         System.out.println("The price of the phone is: $" + phone.getBasePrice());
         phone.setBought(true);
         BoughtPhone currentPhone = new BoughtPhone();

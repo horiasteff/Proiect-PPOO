@@ -10,14 +10,4 @@ public enum Color {
     BLUE,
     PURPLE,
     WHITE
-
-//    private long price;
-//
-//    Color(long price) {
-//        this.price = price;
-//    }
-//
-//    public long getPrice() {
-//        return price;
-//    }
 }

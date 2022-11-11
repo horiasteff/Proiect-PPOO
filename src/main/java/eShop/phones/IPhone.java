@@ -1,4 +1,4 @@
-package eShop.phones.iphone;
+package eShop.phones;
 
 import eShop.enums.Color;
 import eShop.phones.Phone;

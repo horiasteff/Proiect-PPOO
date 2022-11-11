@@ -1,4 +1,4 @@
-package eShop.phones.samsung;
+package eShop.phones;
 
 import eShop.enums.Color;
 import eShop.phones.Phone;
