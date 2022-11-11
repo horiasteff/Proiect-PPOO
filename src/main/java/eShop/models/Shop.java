@@ -657,7 +657,6 @@ public class Shop {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        currentUser.boughtPhones.add(currentPhone);
         feature.payInRates(phone.getBasePrice());
 
         System.out.println("Do you want to go to the main page, re-login or exit?");
@@ -688,6 +687,7 @@ public class Shop {
         System.out.println("                    STATISTICS");
         System.out.println("1. Show total income");
         System.out.println("2. Show list of users");
+        System.out.println("3. Get list of phones by name");
         System.out.println("3. Go to the previous menu");
         boolean isValid = false;
         do {
@@ -702,6 +702,10 @@ public class Shop {
                     isValid = true;
                 }
                 case "3" -> {
+                    getNumberOfPhones();
+                    isValid = true;
+                }
+                case "4" -> {
                     if (status.equals("user")) {
                         showUserMenu();
                     } else if (status.equals("admin")) {
@@ -715,5 +719,35 @@ public class Shop {
                 }
             }
         } while (!isValid);
+    }
+
+    private void getNumberOfPhones() {
+        String[][] phonesNumberList = new String[2][4];
+        int iphone = 0;
+        int samsung = 0;
+        int huawei = 0;
+        int xiaomi = 0;
+        phonesNumberList[0][0] = "IPhone";
+        phonesNumberList[0][1] = "Samsung";
+        phonesNumberList[0][2] = "Huawei";
+        phonesNumberList[0][3] = "Xiaomi";
+
+        for (Phone p : phones) {
+            if (p.getName().equalsIgnoreCase("iphone")) {
+                iphone++;
+            } else if (p.getName().equalsIgnoreCase("samsung")) {
+                samsung++;
+            } else if (p.getName().equalsIgnoreCase("huawei")) {
+                huawei++;
+            } else if (p.getName().equalsIgnoreCase("xiaomi")) {
+                xiaomi++;
+            }
+        }
+
+        phonesNumberList[1][0] = String.valueOf(iphone);
+        phonesNumberList[1][1] = String.valueOf(samsung);
+        phonesNumberList[1][2] = String.valueOf(huawei);
+        phonesNumberList[1][3] = String.valueOf(xiaomi);
+
     }
 }
