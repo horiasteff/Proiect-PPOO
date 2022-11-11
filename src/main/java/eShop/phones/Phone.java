@@ -10,16 +10,18 @@ public class Phone {
     protected String id;
     protected int index;
     protected String name;
+    protected String model;
     protected float size;
     protected Integer year;
     protected Color color;
     protected long basePrice;
     protected boolean isBought = false;
 
-    public Phone(int index, String name, float size, Integer year, Color color, long basePrice) {
+    public Phone(int index, String name,String model, float size, Integer year, Color color, long basePrice) {
         this.id = UUID.randomUUID().toString();
         this.index = index;
         this.name = name;
+        this.model = model;
         this.size = size;
         this.year = year;
         this.color = color;
@@ -82,10 +84,19 @@ public class Phone {
         isBought = bought;
     }
 
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
     @Override
     public String toString() {
          return StringUtils.center(String.valueOf(index), 10, " ") +
                 StringUtils.center(name, 14, " ") +
+                StringUtils.center(model, 14, " ") +
                 StringUtils.center(String.valueOf(size), 16, " ") +
                 StringUtils.center(String.valueOf(year), 14, " ") +
                 StringUtils.center(String.valueOf(color), 10, " ") +

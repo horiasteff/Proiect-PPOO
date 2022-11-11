@@ -3,15 +3,12 @@ package eShop.models;
 import eShop.data.DataSource;
 import eShop.enums.Color;
 import eShop.exceptions.UserAlreadyExists;
-import eShop.phones.Phone;
+import eShop.phones.*;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class Shop {
 
@@ -40,7 +37,7 @@ public class Shop {
         System.out.println("3. View phones only");
         System.out.println("4. Exit");
         chooseStart();
-        if(status!=null){
+        if (status != null) {
             if (status.equalsIgnoreCase("user")) {
                 showUserMenu();
             } else {
@@ -88,7 +85,6 @@ public class Shop {
     private void register() {
         System.out.println("What is your name?");
         String username = sc.next();
-
         System.out.println("Please choose a password for your account");
         String password = sc.next();
         System.out.println("Enter your date of birth (YYYY-MM-DD)");
@@ -96,14 +92,14 @@ public class Shop {
 
         User user = new User(username, password, date);
         for (User u : users) {
-           if(u.getName().equals(user.getName())){
-               try {
-                   throw new UserAlreadyExists("Exista deja acest utilizator");
-               } catch (UserAlreadyExists e) {
-                   e.printStackTrace();
-                   start();
-               }
-           }
+            if (u.getName().equals(user.getName())) {
+                try {
+                    throw new UserAlreadyExists("This user already exists");
+                } catch (UserAlreadyExists e) {
+                    e.printStackTrace();
+                    start();
+                }
+            }
         }
         users.add(user);
         try {
@@ -111,7 +107,7 @@ public class Shop {
             out.append(user.getName()).append(" ").append(user.getPassword()).append(" ").append(String.valueOf(user.getBirthDate())).append("\n");
             out.close();
         } catch (IOException e) {
-          e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -153,7 +149,7 @@ public class Shop {
         System.out.println();
         System.out.println("                    MAIN MENU                   ");
         System.out.println("1. List all phones");
-        System.out.println("2. List available phones");
+        System.out.println("2. Add a phone");
         System.out.println("3. List all bought phones");
         System.out.println("4. Statistics");
         System.out.println("5. Change password");
@@ -179,13 +175,7 @@ public class Shop {
                     isValid = true;
                 }
                 case "2" -> {
-                    getAvailablePhones();
-                    System.out.println();
-                    System.out.println("Want to go back to previous menu?");
-                    output = sc.next();
-                    if (output.equalsIgnoreCase("yes")) {
-                        showAdminMenu();
-                    }
+                    addAPhone();
                     isValid = true;
                 }
                 case "3" -> {
@@ -250,6 +240,53 @@ public class Shop {
 
     }
 
+    private void addAPhone() {
+        int indexNumber = getIndexOfNumber();
+        Phone phone = null;
+        System.out.println("What is the type of the phone? You can choose between Huawei, Samsung, IPhone, Xiaomi");
+        String phoneName = sc.next();
+        System.out.println("What is the model of the phone");
+        String phoneModel = sc.next();
+        System.out.println("What is the size of the phone?");
+        float phoneSize = Float.parseFloat(sc.next());
+        System.out.println("What is the fabrication year?");
+        int phoneYear = Integer.parseInt(sc.next());
+        System.out.println("What is the color?");
+        Color color = Color.valueOf(sc.next().toUpperCase(Locale.ROOT));
+        System.out.println("What is the base price of the phone?");
+        long phonePrice = Long.parseLong(sc.next());
+
+        if (phoneName.equalsIgnoreCase("iphone")) {
+            phone = new IPhone(indexNumber, phoneModel, phoneSize, phoneYear, color, phonePrice);
+        } else if (phoneName.equalsIgnoreCase("huawei")) {
+            phone = new Huawei(indexNumber, phoneModel, phoneSize, phoneYear, color, phonePrice);
+        } else if (phoneName.equalsIgnoreCase("samsung")) {
+            phone = new Samsung(indexNumber, phoneModel, phoneSize, phoneYear, color, phonePrice);
+        } else if (phoneName.equalsIgnoreCase("xiaomi")) {
+            phone = new Xiaomi(indexNumber, phoneModel, phoneSize, phoneYear, color, phonePrice);
+        } else {
+            System.out.println("Please enter a valid name");
+            addAPhone();
+        }
+
+        if (phone != null) {
+            phones.add(phone);
+            try {
+                PrintWriter out = new PrintWriter(new FileWriter("Phones.txt", true));
+                out.append(String.valueOf(phone.getIndex())).append(" ").append(phone.getName()).append(" ").append(String.valueOf(phone.getSize())).append(" ").append(String.valueOf(phone.getYear())).append(" ").append(String.valueOf(phone.getColor())).append(" ").append(String.valueOf(phone.getBasePrice())).append("\n");
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private int getIndexOfNumber() {
+
+        return phones.size() + 1;
+    }
+
     private void showUserMenu() {
 
         System.out.println(" -----------------------------------------------");
@@ -261,12 +298,11 @@ public class Shop {
         System.out.println("1. List all phones");
         System.out.println("2. List available phones");
         System.out.println("3. List all bought phones");
-        System.out.println("4. List your bought phones");
-        System.out.println("5. Change password");
-        System.out.println("6. Show personal info");
-        System.out.println("7. Filter phones");
-        System.out.println("8. Logout");
-        System.out.println("9. Exit");
+        System.out.println("4. Change password");
+        System.out.println("5. Show personal info");
+        System.out.println("6. Filter phones");
+        System.out.println("7. Logout");
+        System.out.println("8. Exit");
 
         System.out.println();
         System.out.println("Enter your option");
@@ -294,10 +330,6 @@ public class Shop {
                     isValidChoice = true;
                 }
                 case "4" -> {
-                    getCurrentlyBoughtPhones();
-                    isValidChoice = true;
-                }
-                case "5" -> {
                     changePassword();
                     System.out.println("Do you want to go back to previous menu?");
                     output = sc.next();
@@ -315,15 +347,15 @@ public class Shop {
                     }
                     isValidChoice = true;
                 }
-                case "6" -> {
+                case "5" -> {
                     showInfo();
                     isValidChoice = true;
                 }
-                case "7" -> {
+                case "6" -> {
                     showListMenuOptions();
                     isValidChoice = true;
                 }
-                case "8" -> {
+                case "7" -> {
                     start();
                     if (status.equalsIgnoreCase("user")) {
                         showUserMenu();
@@ -332,7 +364,7 @@ public class Shop {
                     }
                     isValidChoice = true;
                 }
-                case "9" -> isValidChoice = true;
+                case "8" -> isValidChoice = true;
                 default -> {
                     System.out.println("You entered a wrong number!");
                     showUserMenu();
@@ -447,7 +479,20 @@ public class Shop {
     }
 
     private void seeIncome() {
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("BoughtPhones.txt"));
+            String st;
+            while ((st = br.readLine()) != null) {
+                Phone phone = new Phone(Integer.parseInt(st.split(" ")[0]), st.split(" ")[1], st.split(" ")[2], Float.parseFloat(st.split(" ")[3]), Integer.parseInt(st.split(" ")[4]), Color.valueOf(st.split(" ")[5].toUpperCase(Locale.ROOT)), Long.parseLong(st.split(" ")[6]));
+                thePrice += phone.getBasePrice();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         System.out.println("Total income: $ " + thePrice);
+
     }
 
     private void changePassword() {
@@ -470,9 +515,9 @@ public class Shop {
                         String st;
                         while ((st = br.readLine()) != null) {
                             User user = new User(st.split(" ")[0], st.split(" ")[1], st.split(" ")[2]);
-                            if(user.getName().equals(currentUser.getName()) && user.getBirthDate().equals(currentUser.getBirthDate())){
+                            if (user.getName().equals(currentUser.getName()) && user.getBirthDate().equals(currentUser.getBirthDate())) {
                                 out.write(currentUser.getName() + " " + currentUser.getPassword() + " " + currentUser.getBirthDate() + "\n");
-                            }else{
+                            } else {
                                 out.write(user.getName() + " " + user.getPassword() + " " + user.getBirthDate() + "\n");
                             }
                         }
@@ -484,7 +529,7 @@ public class Shop {
                         BufferedReader br2 = new BufferedReader(new FileReader("Temp.txt"));
                         PrintWriter printWriter = new PrintWriter(new FileWriter("Users.txt"));
                         String line;
-                        while((line = br2.readLine()) != null){
+                        while ((line = br2.readLine()) != null) {
                             printWriter.append(line.split(" ")[0]).append(" ").append(line.split(" ")[1]).append(" ").append(line.split(" ")[2]).append("\n");
                         }
                         printWriter.close();
@@ -517,32 +562,28 @@ public class Shop {
     }
 
     private void getAllPhones() {
-        int i = 1;
         System.out.println("There are all the phones");
-        for (Phone phone : DataSource.phoneList()) {
-            String padding = i < 10 ? " " : "";
-            System.out.print(padding + i + ". ");
+        for (Phone phone : phones) {
             System.out.println(phone);
-            i++;
         }
     }
 
     private void getAllUsers() {
         for (User user : users) {
             System.out.println(user);
-            System.out.println(user.boughtPhones);
         }
     }
 
     private void getBoughtPhones() {
-        int i = 1;
-        System.out.println("These are the bought phones");
-        for (Phone phone : phones) {
-            if (phone.isBought()) {
-                System.out.print(i);
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("BoughtPhones.txt"));
+            String st;
+            while ((st = br.readLine()) != null) {
+                Phone phone = new Phone(Integer.parseInt(st.split(" ")[0]), st.split(" ")[1], st.split(" ")[2], Float.parseFloat(st.split(" ")[3]), Integer.parseInt(st.split(" ")[4]), Color.valueOf(st.split(" ")[5].toUpperCase(Locale.ROOT)), Long.parseLong(st.split(" ")[6]));
                 System.out.println(phone);
-                i++;
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -559,27 +600,26 @@ public class Shop {
     }
 
     private void buyAPhone() {
-
         boolean buying = true;
 
         while (buying) {
             buying = false;
 
-                boolean isValid = false;
-                do {
-                    System.out.println("Choose the index");
-                    int index = sc.nextInt();
-                    for (Phone phone : phones) {
-                        if (!phone.isBought()) {
-                            if (index == phone.getIndex()) {
-                                isValid = true;
-                                warantyBuy(phone);
-                            } else {
-                                isValid = false;
-                            }
+            boolean isValid = false;
+            do {
+                System.out.println("Choose the index");
+                int index = sc.nextInt();
+                for (Phone phone : phones) {
+                    if (!phone.isBought()) {
+                        if (index == phone.getIndex()) {
+                            isValid = true;
+                            warantyBuy(phone);
+                        } else {
+                            isValid = false;
                         }
                     }
-                } while (!isValid);
+                }
+            } while (!isValid);
         }
         showUserMenu();
     }
@@ -591,18 +631,19 @@ public class Shop {
         System.out.println("\nFow how many years do you want the waranty?");
         System.out.println("Please choose a number smaller than 5");
         do {
-            try{
+            try {
                 warantyYears = Integer.parseInt(sc.next());
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Ai introdus eronat");
                 warantyBuy(phone);
-            };
+            }
+            ;
             if (warantyYears > 5) {
                 System.out.println("Please choose a number smaller than 5");
             }
         } while (warantyYears > 5);
 
-        long totalPrice = phone.getBasePrice() + warantyYears* 100L;
+        long totalPrice = phone.getBasePrice() + warantyYears * 100L;
         phone.setBasePrice(totalPrice);
         System.out.println("The price of the phone is: $" + phone.getBasePrice());
         phone.setBought(true);
@@ -611,7 +652,7 @@ public class Shop {
         currentPhone.setCurrentlyBought(true);
         try {
             PrintWriter out = new PrintWriter(new FileWriter("BoughtPhones.txt", true));
-            out.append(currentPhone.getPhone().getName()).append(" ").append(String.valueOf(currentPhone.getPhone().getSize())).append(" ").append(String.valueOf(currentPhone.getPhone().getYear())).append(" ").append(String.valueOf(currentPhone.getPhone().getColor())).append(" ").append(String.valueOf(currentPhone.getPhone().getBasePrice())).append("\n");
+            out.append(String.valueOf(currentPhone.getPhone().getIndex())).append(currentPhone.getPhone().getName()).append(" ").append(String.valueOf(currentPhone.getPhone().getSize())).append(" ").append(String.valueOf(currentPhone.getPhone().getYear())).append(" ").append(String.valueOf(currentPhone.getPhone().getColor())).append(" ").append(String.valueOf(currentPhone.getPhone().getBasePrice())).append("\n");
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -633,14 +674,6 @@ public class Shop {
 
     private void exit() {
         System.exit(0);
-    }
-
-    private List<BoughtPhone> getCurrentlyBoughtPhones() {
-        List<BoughtPhone> boughtPhones = new ArrayList<>();
-        for (User user : users) {
-            boughtPhones.addAll(user.getCurrentlyBoughtPhones());
-        }
-        return boughtPhones;
     }
 
     private void buying() {
@@ -669,7 +702,11 @@ public class Shop {
                     isValid = true;
                 }
                 case "3" -> {
-                    showUserMenu();
+                    if (status.equals("user")) {
+                        showUserMenu();
+                    } else if (status.equals("admin")) {
+                        showAdminMenu();
+                    }
                     isValid = true;
                 }
                 default -> {

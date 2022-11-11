@@ -48,7 +48,7 @@ public class DataSource {
             BufferedReader br = new BufferedReader(new FileReader("Phones.txt"));
             String st;
             while ((st = br.readLine()) != null) {
-                Phone phone = new Phone(Integer.parseInt(st.split(" ")[0]), st.split(" ")[1], Float.parseFloat(st.split(" ")[2]), Integer.parseInt(st.split(" ")[3]), Color.valueOf(st.split(" ")[4].toUpperCase(Locale.ROOT)), Long.parseLong(st.split(" ")[5]));
+                Phone phone = new Phone(Integer.parseInt(st.split(" ")[0]), st.split(" ")[1],  st.split(" ")[2], Float.parseFloat(st.split(" ")[3]), Integer.parseInt(st.split(" ")[4]), Color.valueOf(st.split(" ")[5].toUpperCase(Locale.ROOT)), Long.parseLong(st.split(" ")[6]));
                 phones.add(phone);
             }
         } catch (IOException e) {

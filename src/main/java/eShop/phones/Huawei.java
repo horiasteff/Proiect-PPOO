@@ -1,10 +1,9 @@
 package eShop.phones;
 
 import eShop.enums.Color;
-import eShop.phones.Phone;
 
 public class Huawei extends Phone {
-    public Huawei(int index, String name, float size, Integer year, Color color, long basePrice) {
-        super(index, name, size, year, color, basePrice);
+    public Huawei(int index, String model, float size, Integer year, Color color, long basePrice) {
+        super(index, "Huawei", model, size, year, color, basePrice);
     }
 }
