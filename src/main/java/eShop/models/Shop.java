@@ -192,10 +192,11 @@ public class Shop {
                     System.out.println("Do you want to go back to previous menu?");
                     output = sc.next();
                     if (output.equalsIgnoreCase("yes")) {
-                        statistics();
-                    } else {
+                        showAdminMenu();
+                    } else if (output.equalsIgnoreCase("no")){
+                        exit();
+                    }else {
                         System.out.println("You entered a wrong number!");
-                        showUserMenu();
                     }
                     isValid = true;
                 }
@@ -688,7 +689,7 @@ public class Shop {
         System.out.println("1. Show total income");
         System.out.println("2. Show list of users");
         System.out.println("3. Get list of phones by name");
-        System.out.println("3. Go to the previous menu");
+        System.out.println("4. Go to the previous menu");
         boolean isValid = false;
         do {
             String option = sc.next();
@@ -748,6 +749,11 @@ public class Shop {
         phonesNumberList[1][1] = String.valueOf(samsung);
         phonesNumberList[1][2] = String.valueOf(huawei);
         phonesNumberList[1][3] = String.valueOf(xiaomi);
+
+
+            for (int j = 0; j < 4; j++) {
+                System.out.println(phonesNumberList[0][j] + " " + phonesNumberList[1][j]);
+            }
 
     }
 }
