@@ -653,7 +653,7 @@ public class Shop {
         currentPhone.setCurrentlyBought(true);
         try {
             PrintWriter out = new PrintWriter(new FileWriter("BoughtPhones.txt", true));
-            out.append(String.valueOf(currentPhone.getPhone().getIndex())).append(currentPhone.getPhone().getName()).append(" ").append(String.valueOf(currentPhone.getPhone().getSize())).append(" ").append(String.valueOf(currentPhone.getPhone().getYear())).append(" ").append(String.valueOf(currentPhone.getPhone().getColor())).append(" ").append(String.valueOf(currentPhone.getPhone().getBasePrice())).append("\n");
+            out.append(String.valueOf(currentPhone.getPhone().getIndex())).append(" ").append(currentPhone.getPhone().getName()).append(" ").append(currentPhone.getPhone().getModel()).append(" ").append(String.valueOf(currentPhone.getPhone().getSize())).append(" ").append(String.valueOf(currentPhone.getPhone().getYear())).append(" ").append(String.valueOf(currentPhone.getPhone().getColor())).append(" ").append(String.valueOf(currentPhone.getPhone().getBasePrice())).append("\n");
             out.close();
         } catch (IOException e) {
             e.printStackTrace();

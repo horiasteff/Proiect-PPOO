@@ -1,5 +1,5 @@
-Maria 5678 2000-01-23
-Dan 0000 2001-06-15
-Janina cartecolorat 2000-08-01
+Maria maria 2000-01-23
+Dan dan 2001-06-15
+Janina janina 2000-08-01
 Dragos dragos 2000-09-09
 Bianca bianca 2002-02-15
